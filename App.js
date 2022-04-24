@@ -12,10 +12,11 @@ export default function App() {
 
 // Adding a note to file & render
   const saveNote = async (note) => {
-    setTaskItems([...taskItems, note]);
+    const newNotes = [...taskItems, note]
+    setTaskItems(newNotes);
     setTask(null);
     try{
-      await AsyncStorage.setItem("Notes", JSON.stringify(taskItems));
+      await AsyncStorage.setItem("Notes", JSON.stringify(newNotes));
     }catch(err){
       alert(err);
     }
