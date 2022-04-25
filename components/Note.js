@@ -1,6 +1,7 @@
 
 import { View, Text, StyleSheet,TouchableOpacity, ImageBackground } from "react-native";
 import React,  {useState} from 'react';
+import { TextInput } from "react-native-web";
 // Actual component
 const Note = (props) => {
     const bg = require('../orangBG.png');
@@ -13,13 +14,6 @@ const Note = (props) => {
         <View style={styles.itemLeft}>
           <Text style={styles.itemText}>{props.text}</Text>
         </View>
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.btn}>
-
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
-          </TouchableOpacity>
-        </View>
       </ImageBackground>
     )
   }
@@ -29,28 +23,13 @@ const styles = StyleSheet.create({
     itemLeft: {
         width: '100%',
         top: 10,
-        position: 'absolute'
+        position: 'absolute',
+        padding: 10,
     },
     itemText: {
         maxWidth: '90%',
 
     },    
-    bottomContainer: {
-      flex:1,
-      flexDirection: 'row',
-      position: 'absolute',
-      bottom: 0,
-      width: '95%',
-      height: '10%',
-    },
-    btn: {
-      width: 30,
-      height: 30,
-      borderRadius: 20,
-      backgroundColor: 'cyan',
-      marginLeft: 30,
-      bottom: 30,
-    },
 });
 
 export default Note;

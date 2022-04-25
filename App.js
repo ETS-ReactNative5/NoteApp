@@ -1,14 +1,18 @@
-import { StyleSheet, Text, TextInput, View, Image, ScrollView,KeyboardAvoidingView, Platform,TouchableOpacity,AsyncStorage} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ScrollView,KeyboardAvoidingView, Platform,TouchableOpacity,AsyncStorage, Button} from 'react-native';
 import React,  {useState, useEffect} from 'react';
 import ImageBackground from 'react-native/Libraries/Image/ImageBackground';
 import Note from './components/Note';
-
+import ModalPoup from './components/Modal';
 const bg = require('./assets/bg.jpg');
 
 export default function App() {
   // Two useStates here, first handles invidual Note, second handles all Notes user has made. 
   const [task, setTask] = useState('');
+  const [task2, setTask2] = useState('');
   const [taskItems, setTaskItems] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  const [tempIndex, setTempIndex] = useState(0);
 
 // Adding a note to file & render
   const saveNote = async (note) => {
@@ -40,7 +44,7 @@ export default function App() {
     try{
       // Get notes from file
       let notes = await AsyncStorage.getItem("Notes");
-      alert(notes);
+      //alert(notes);
       if(notes !== null){
         // IF find notes then set them to taskItesms & render to screen 
         setTaskItems(JSON.parse(notes));
@@ -49,14 +53,57 @@ export default function App() {
       alert(err);
     }
   }
-  // Get notes from file on app ssssssstsart
+  const updateStoredArray = async (array) =>{
+    //const newNotes = [...taskItems, note]
+    //setTaskItems(newNotes);
+    //setTask(null);
+    try{
+      await AsyncStorage.setItem("Notes", JSON.stringify(array));
+    }catch(err){
+      alert(err);
+    }
+  }
+
+  // Function get called when user presses pop up windows button to submit edited text.
+  function editNote(){
+    //PopUp visibility off as new note is saved.
+    setVisible(false);
+    // Find note that has to be edited
+    let selected = taskItems[tempIndex];
+    // New note
+    let newNote = task2;
+    // Get old array
+    let itemsCopy = [...taskItems];
+
+    if (selected !== -1) {
+      itemsCopy[tempIndex] = newNote;
+    }
+
+    // Set new array of notes with modified element to local & file
+    setTaskItems(itemsCopy);
+    updateStoredArray(itemsCopy);
+    // Clean temporary states
+    setTempIndex(null);
+    setTask2(null);
+  }
+
+  function openModal(index){
+    // store index of opened note and then open modal popup.
+    setTempIndex(index);
+    setVisible(true);
+  }
+  // Get notes from file on app start
   useEffect(()=>{
     load()
-    alert(taskItems.length);
   },[])
 
   return (
     <ImageBackground source={bg} resizeMode='cover'style={styles.container}>
+      <ModalPoup visible={visible}>
+      <TextInput multiline={true} placeholder={'New text here'} numberOfLines={4} value={task2} onChangeText={text => setTask2(text)} />
+        <TouchableOpacity onPress={()=>{editNote(tempIndex)}} style={{width: 100, height: 40, borderRadius: 25, backgroundColor: 'cyan', bottom: -250,}}></TouchableOpacity>
+      </ModalPoup>
+
       <View style={styles.topContainer}>
         <View style={styles.header}>
           <Text style={{fontWeight: 'bold', fontSize: 25}}>Note</Text>
@@ -77,8 +124,13 @@ export default function App() {
             taskItems.map((item, index) => {
               return(
                 <TouchableOpacity key={index} onPress={() => deleteNote(index)}>
-                  <Note text={item}></Note>
+                  <Note text={item}>
+                  </Note>
+                  <TouchableOpacity  onPress={() => openModal(index)} style={{width: 150, height: 30, backgroundColor: 'black', alignSelf:'center', bottom: 35,marginLeft: 20, borderBottomLeftRadius: 20,borderBottomRightRadius: 20, backgroundColor: '#FFA500'}}>
+                    <Text style={{color: 'black', bottom: -13, alignSelf: 'center', fontWeight: 'bold'}}>Edit note</Text>
+                  </TouchableOpacity>
                 </TouchableOpacity>
+                
                 
               )
             })
