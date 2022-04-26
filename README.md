@@ -6,4 +6,4 @@
 - Language support for fin/eng
 - Made to be as simple as possible (just like me)
 
-<video src='./NOTEE.mp4' width=400/>
+<video src='https://streamable.com/9p09uz' width=400/>
