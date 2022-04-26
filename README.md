@@ -6,4 +6,4 @@
 - Language support for fin/eng
 - Made to be as simple as possible (just like me)
 
-<video src='https://streamable.com/9p09uz' width=400/>
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://streamable.com/9p09uz)
