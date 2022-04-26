@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, Image, ScrollView,KeyboardAvoidingView, Platform,TouchableOpacity,AsyncStorage, Button} from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, ScrollView,KeyboardAvoidingView, Platform,TouchableOpacity,AsyncStorage} from 'react-native';
 import React,  {useState, useEffect} from 'react';
 import ImageBackground from 'react-native/Libraries/Image/ImageBackground';
 import Note from './components/Note';
@@ -11,8 +11,8 @@ export default function App() {
   const [task2, setTask2] = useState('');
   const [taskItems, setTaskItems] = useState([]);
   const [visible, setVisible] = useState(false);
-
   const [tempIndex, setTempIndex] = useState(0);
+  const [language, setLanguage] = useState(true);
 
 // Adding a note to file & render
   const saveNote = async (note) => {
@@ -53,6 +53,7 @@ export default function App() {
       alert(err);
     }
   }
+  // For updating notes that are stored in the AsyncStorage
   const updateStoredArray = async (array) =>{
     //const newNotes = [...taskItems, note]
     //setTaskItems(newNotes);
@@ -92,6 +93,13 @@ export default function App() {
     setTempIndex(index);
     setVisible(true);
   }
+  const saveConfig = async () => {
+    try{
+      await AsyncStorage.setItem("Language", language);
+    }catch(err){
+      alert(err);
+    }
+  }
   // Get notes from file on app start
   useEffect(()=>{
     load()
@@ -100,18 +108,28 @@ export default function App() {
   return (
     <ImageBackground source={bg} resizeMode='cover'style={styles.container}>
       <ModalPoup visible={visible}>
-      <TextInput multiline={true} placeholder={'New text here'} numberOfLines={4} value={task2} onChangeText={text => setTask2(text)} />
-        <TouchableOpacity onPress={()=>{editNote(tempIndex)}} style={{width: 100, height: 40, borderRadius: 25, backgroundColor: 'cyan', bottom: -250,}}></TouchableOpacity>
+      <TextInput multiline={true} placeholder={language ? 'New text here' : 'Uusi teksti tähän'} numberOfLines={4} value={task2} onChangeText={text => setTask2(text)} />
+        <TouchableOpacity onPress={()=>{editNote(tempIndex)}} style={{width: 100, height: 40, borderRadius: 25, backgroundColor: 'white', bottom: -230,elevation: 3}}>
+          <Text style={{alignSelf: 'center', padding: 10,fontSize: 15}}>Save</Text>
+        </TouchableOpacity>
       </ModalPoup>
 
       <View style={styles.topContainer}>
         <View style={styles.header}>
-          <Text style={{fontWeight: 'bold', fontSize: 25}}>Note</Text>
-          <Text style={{fontWeight: 'bold', fontSize: 25}}>Application</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 25}}>{language ? 'Note' : 'Muistiinpano'}</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 25}}>{language ? 'Application' : 'Aplikaatio'}</Text>
         </View>
         <View style={styles.profile}>
           <View style={styles.imageContainer}>
             <Image style={{resizeMode: 'cover', width: 80, height: 80}} source={require('./minä.jpg')}></Image>
+          </View>
+          <View style={{flexDirection: 'row', left: 75,}}>
+            <TouchableOpacity onPress={()=>{setLanguage(true)}} style={{width: 30, height: 30, backgroundColor: 'white', marginLeft: 20,marginTop:10, borderRadius: 20, overflow: 'hidden'}}>
+              <Image style={{resizeMode: 'cover', width: 30, height: 30}} source={require('./usa.png')}></Image>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{setLanguage(false)}} style={{width: 30, height: 30, backgroundColor: 'white',marginLeft: 20,marginTop:10, borderRadius: 20, overflow: 'hidden'}}>
+              <Image style={{resizeMode: 'cover', width: 30, height: 30}} source={require('./finland.png')}></Image>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -127,7 +145,7 @@ export default function App() {
                   <Note text={item}>
                   </Note>
                   <TouchableOpacity  onPress={() => openModal(index)} style={{width: 150, height: 30, backgroundColor: 'black', alignSelf:'center', bottom: 35,marginLeft: 20, borderBottomLeftRadius: 20,borderBottomRightRadius: 20, backgroundColor: '#FFA500'}}>
-                    <Text style={{color: 'black', bottom: -13, alignSelf: 'center', fontWeight: 'bold'}}>Edit note</Text>
+                    <Text style={{color: 'black', bottom: -13, alignSelf: 'center', fontWeight: 'bold'}}>{language ? 'Edit note' : 'Muokkaa'}</Text>
                   </TouchableOpacity>
                 </TouchableOpacity>
                 
@@ -143,7 +161,7 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.writeTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder={'Write notes'} value={task} onChangeText={text => setTask(text)} />
+        <TextInput style={styles.input} placeholder={language ? 'Write notes' : 'Kirjoita muistiinpano'} value={task} onChangeText={text => setTask(text)} />
         <TouchableOpacity onPress={() => saveNote(task)}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>

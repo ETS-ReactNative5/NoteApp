@@ -1,12 +1,9 @@
 
 import { View, Text, StyleSheet,TouchableOpacity, ImageBackground } from "react-native";
 import React,  {useState} from 'react';
-import { TextInput } from "react-native-web";
 // Actual component
 const Note = (props) => {
     const bg = require('../orangBG.png');
-    const [bgSet,setBgSet] = useState(true)
-    const [title, setTitle] = useState(0);
 
     return (
       
