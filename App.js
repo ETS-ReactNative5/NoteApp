@@ -6,6 +6,8 @@ import ModalPoup from './components/Modal';
 const bg = require('./assets/bg.jpg');
 
 export default function App() {
+  // TODO: Organize codebase better. Make it more readable & mantainable (Separate files for components)
+
   // Two useStates here, first handles invidual Note, second handles all Notes user has made. 
   const [task, setTask] = useState('');
   const [task2, setTask2] = useState('');
@@ -121,14 +123,14 @@ export default function App() {
         </View>
         <View style={styles.profile}>
           <View style={styles.imageContainer}>
-            <Image style={{resizeMode: 'cover', width: 80, height: 80}} source={require('./minä.jpg')}></Image>
+            <Image style={{resizeMode: 'cover', width: 80, height: 80}} source={require('./images/minä.jpg')}></Image>
           </View>
           <View style={{flexDirection: 'row', left: 75,}}>
             <TouchableOpacity onPress={()=>{setLanguage(true)}} style={{width: 30, height: 30, backgroundColor: 'white', marginLeft: 20,marginTop:10, borderRadius: 20, overflow: 'hidden'}}>
-              <Image style={{resizeMode: 'cover', width: 30, height: 30}} source={require('./usa.png')}></Image>
+              <Image style={{resizeMode: 'cover', width: 30, height: 30}} source={require('./images/usa.png')}></Image>
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>{setLanguage(false)}} style={{width: 30, height: 30, backgroundColor: 'white',marginLeft: 20,marginTop:10, borderRadius: 20, overflow: 'hidden'}}>
-              <Image style={{resizeMode: 'cover', width: 30, height: 30}} source={require('./finland.png')}></Image>
+              <Image style={{resizeMode: 'cover', width: 30, height: 30}} source={require('./images/finland.png')}></Image>
             </TouchableOpacity>
           </View>
         </View>

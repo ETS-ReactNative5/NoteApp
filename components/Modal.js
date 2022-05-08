@@ -1,14 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, Modal, Animated } from 'react-native';
 // 
-const ModalPoup = ({visible, children}) => {
-  // Käyttöohje pop up screenille react nativella: 
-  // 1. Lisää tää tiedosto projektiisi
-  // 2. Importtaa tää tiedosto haluttuun filuun, esim app.js
-  // 3. Lisää muuttuja valitsemaasi filuun: const [visible, setVisible] = useState(false);
-  // 4. Lisää <ModalPoup visible={visible}> *Tänne modalin viewit ja tekstit yms* </ModalPoup visible={visible}>
-  // 5. Sit halutussa buttonissa vaan: onPress={ () => setVisible(true)} niin modal pop up pomppaa näytölle.
-  
+const ModalPoup = ({visible, children}) => {  
     const [showModal, setShowModal] = useState(visible);
     const scaleValue = useRef(new Animated.Value(0)).current;
   

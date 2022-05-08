@@ -3,7 +3,7 @@ import { View, Text, StyleSheet,TouchableOpacity, ImageBackground } from "react-
 import React,  {useState} from 'react';
 // Actual component
 const Note = (props) => {
-    const bg = require('../orangBG.png');
+    const bg = require('../images/orangBG.png');
 
     return (
       
